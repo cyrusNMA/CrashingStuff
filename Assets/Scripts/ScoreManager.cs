@@ -23,9 +23,15 @@ namespace Score{
 			
 			return instance;
 		}
+
+		void Awake(){
+
+			//Init the score 
+			string data = PlayerPrefs.GetString(GameSetting.ID.SCORE_ID);
+			SetData(data);
+		}
 		
 		public void SetData( string txt_data ){
-			Debug.Log ("ScoreManager > SetData() : txt_data ? " + txt_data);
 
 			//new array
 			datas = new ScoreRecord[array_lenght];
@@ -39,17 +45,17 @@ namespace Score{
 			}else{
 				//init the data
 				for(int i = 0 ; i < array_lenght ; i ++){
-					datas[i] = new ScoreRecord("Player"+i , 0);
+					datas[i] = new ScoreRecord("Player"+i , 1000 + array_lenght - i);
 				}
 			}
 		}
 
-		public string GetData_txt(){
+		public string GetData_txt( bool forView = false ){
 			string txt_data = "";
 
 			if( datas != null ){
 				foreach(ScoreRecord sr in datas){
-					txt_data += sr.GetText() + ";";
+					txt_data += sr.GetText(forView) + ( forView ? "\n" : ";");
 				}
 			}
 
@@ -61,8 +67,36 @@ namespace Score{
 			return current_score;
 		}
 
+		public bool TheHighestScore(){
+
+			if( current_score > datas[0].holder_score)
+				return true;
+
+			return false;
+		}
+
+		public void SaveData(){
+			//Do Sorting 
+			for(int i = datas.Length-1  ; i >= 0 ; i--){
+				if(current_score > datas[i].holder_score){
+					int temp = datas[i].holder_score;
+					datas[i].holder_score = current_score;
+					//Do interchange
+					if( i < datas.Length-1 ){
+						datas[i+1].holder_score = temp;	
+					}
+				}
+			}
+
+			PlayerPrefs.SetString(GameSetting.ID.SCORE_ID , GetData_txt());
+
+			//reset
+			current_score = 0;
+		}
+
 	}
-	
+
+	//A data class to holder a player's data
 	public class ScoreRecord{
 		public string holder_name = "";
 		public int holder_score = 0 ;
@@ -78,8 +112,8 @@ namespace Score{
 			holder_score = int.Parse(split_txt[1]);
 		}
 
-		public string GetText(){
-			return holder_name + "," + holder_score;
+		public string GetText( bool forView = false ){
+			return holder_name + ( forView ? "\t" : ",") + holder_score;
 		}
 	}
 }

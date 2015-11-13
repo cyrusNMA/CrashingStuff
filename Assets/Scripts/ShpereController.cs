@@ -6,6 +6,7 @@ public class ShpereController : MonoBehaviour {
 	bool isEnabled;
 
 	public CamMoveByMouseDrag touchHandler = null;
+	public AccelerationHandler AccelHandler = null;
 	public int move_speed = 100;
 	Rigidbody rig = null;
 
@@ -67,6 +68,12 @@ public class ShpereController : MonoBehaviour {
 					move_x(-move_speed);
 					break;
 				}
+			}
+
+			if(AccelHandler != null){
+
+				move_x( (int)(-move_speed * (AccelHandler.GetAcceleration().x * 10f)) );
+				move_z( (int)(move_speed * (AccelHandler.GetAcceleration().y * 10f)) );
 			}
 		}
 	}

@@ -13,15 +13,8 @@ public class MainMenuManager : MonoBehaviour {
 	void Awake(){
 		_SM = Score.ScoreManager.GetInstance();
 
-		string data = PlayerPrefs.GetString(GameSetting.ID.SCORE_ID);
-		_SM.SetData(data);
-		string getdata_string = _SM.GetData_txt();
-		Debug.Log (" MainMenuManager > Awake() : getdata_string ? " + getdata_string);
-
-
-//		//parse string
-
-
+		string getdata_string = _SM.GetData_txt(true);
+		SetScore(getdata_string);
 	}
 
 	// Use this for initialization
@@ -32,9 +25,9 @@ public class MainMenuManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {}
 
-	public void SetScore( string[] n_datas ){
+	public void SetScore( string n_data_txt ){
 		//do init text
-		HighScoreLable.text = "";
+		HighScoreLable.text = n_data_txt;
 	}
 
 	public void StartGame(){

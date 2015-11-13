@@ -13,11 +13,15 @@ public class GameManager : MonoBehaviour {
 	Vector2 spawerArea = new Vector2(40, 40);
 	List<Cube.CubeProp> cubeProp_list;
 
+	int hit_type_b4 = -1; //initially is in null, so set it to -1
+	int continue_bonus = 0;
+
 	public Text TimerLabel = null;
 	public Text ScoreLabel = null;
 	public int cude_rand_cnt = 0;
 	public GameObject prefab_cube = null;
 	public ShpereController sphere = null;
+	public Animation anim_countDown = null;
 	
 	Score.ScoreManager _SM;
 
@@ -29,7 +33,6 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 
 		_SM = Score.ScoreManager.GetInstance();
-		_SM.GetData_txt();
 
 		//Hide textLables
 		TimerLabel.gameObject.SetActive(false);
@@ -44,7 +47,6 @@ public class GameManager : MonoBehaviour {
 		if( data_text.text != "" ){
 			datas = data_text.ToString().Split("\n"[0]);
 			foreach( string data in datas ){
-				Debug.Log ( " data_text ? " + data );
 				string[] split_data = data.ToString().Split(","[0]);
 
 				switch(split_data[0]){
@@ -52,18 +54,20 @@ public class GameManager : MonoBehaviour {
 					initial_cube_count = int.Parse(split_data[1]);
 					break;
 				case "cube": 
-					Debug.Log(" split_data[1]  ? " + split_data[1]);
 					Color hex_;
 					Color.TryParseHexString(split_data[1] , out hex_);
-					Debug.Log ( hex_ );
 					cubeProp_list.Add ( new Cube.CubeProp() );
-					cubeProp_list[cubeProp_list.Count-1].type_id = cubeProp_list.Count;
+					cubeProp_list[cubeProp_list.Count-1].type_id = cubeProp_list.Count-1;
 					cubeProp_list[cubeProp_list.Count-1].score = int.Parse(split_data[2]);
 					cubeProp_list[cubeProp_list.Count-1]._color = hex_;
 					break;
 				}
 			}
 
+			//Set Animation just play once time.
+//			anim_countDown.wrapMode = WrapMode.Once;
+
+			//As sphere should able to be control when game is start. set as disable.
 			sphere.SetEnable(false);
 
 			//pre-set the gameState on ready
@@ -72,8 +76,9 @@ public class GameManager : MonoBehaviour {
 			//Do 3 secounds count down before game start
 			timeCountTime = timerTime_ready;
 			
-			//Pre-grand the cube
-			creat_cude();
+			//Pre-gen the 10 cubes
+			for(int i = 0 ; i < initial_cube_count ; i++)
+				creat_cude();
 
 		}else{
 				Debug.LogError( "Data file is missing!!" );
@@ -100,10 +105,6 @@ public class GameManager : MonoBehaviour {
 				ScoreLabel.gameObject.SetActive(true);
 			}
 
-			//Do Animated Time counter
-
-//			Debug.Log (" GameState.ready : timeCountTime ? " + timeCountTime);
-
 			break;
 		case GameState.onplay:
 
@@ -123,6 +124,7 @@ public class GameManager : MonoBehaviour {
 			//Set Score
 			PlayerPrefs.SetString( GameSetting.ID.SCORE_ID ,_SM.GetData_txt());
 			sphere.SetEnable(false);
+			_SM.SaveData();
 
 			Application.LoadLevel(0);
 			break;
@@ -142,18 +144,26 @@ public class GameManager : MonoBehaviour {
 
 	void UpdateScore( int n_score ){
 
-		Debug.Log (" GameManager > UpdateScore() : n_score ? " + n_score);
-		n_score = _SM.ScoreUpdate(n_score);
-
 		//update text Lable
-		ScoreLabel.text = "Score : " + n_score;
-
+		ScoreLabel.text = "Score : " + _SM.ScoreUpdate(n_score) + ( _SM.TheHighestScore()? "\nNew Record!!" : "" );
 	}
 
-	public void CudeDistoried( int type , int n_score ){
+	public void CudeDistoried( int n_type , int n_score ){
+
+		//Do culcate with combom
+		if(hit_type_b4 == n_type){
+			continue_bonus += 1;
+		}else{
+			hit_type_b4 = n_type;
+			continue_bonus = 0;
+		}
+
+		n_score = n_score + (n_score * continue_bonus);
+
 		//Get score datas
 		UpdateScore( n_score );
 
+		//call 
 		StartCoroutine(Grand_Cude());
 	}
 
@@ -171,10 +181,11 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	//Do random generate more cude
 	IEnumerator Grand_Cude(){
 		int rand_dice = Random.Range(0,50);
 
-		if( rand_dice > 35 ){
+		if( rand_dice > 45 ){
 			yield return new WaitForSeconds(1);
 			creat_cude();
 		}
