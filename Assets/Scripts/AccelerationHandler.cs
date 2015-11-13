@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/* Copyright (C) Cyrus Lam , Inc - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Cyrus Lam <cyrus1127@gmail.com>, Noverber 2015
+ */
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -33,7 +39,7 @@ public class AccelerationHandler : MonoBehaviour {
 	}
 
 	public Vector2 GetAcceleration(){
-		Vector3 acc = new Vector3( RoundUp(Input.acceleration.x - 0.1f), Input.acceleration.y + 0.4f , RoundUp(Input.acceleration.z + 1f) );
+		Vector3 acc = new Vector3( RoundUp(Input.acceleration.x ), Input.acceleration.y + 0.4f , RoundUp(Input.acceleration.z + 1f) );
 		Vector2 reculca = new Vector2( acc.x , acc.y);
 
 		// on Screen Debug.Log

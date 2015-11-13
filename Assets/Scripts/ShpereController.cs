@@ -1,14 +1,20 @@
-﻿using UnityEngine;
+﻿/* Copyright (C) Cyrus Lam , Inc - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Cyrus Lam <cyrus1127@gmail.com>, Noverber 2015
+ */
+
+using UnityEngine;
 using System.Collections;
 
 public class ShpereController : MonoBehaviour {
 
 	bool isEnabled;
+	Rigidbody rig = null;
 
-	public CamMoveByMouseDrag touchHandler = null;
 	public AccelerationHandler AccelHandler = null;
 	public int move_speed = 100;
-	Rigidbody rig = null;
+
 
 	// Use this for initialization
 	void Start () {
@@ -34,42 +40,6 @@ public class ShpereController : MonoBehaviour {
 			}
 			
 			//Mobile Support
-			if( touchHandler != null ){
-				switch(touchHandler.Get_Cur_Direct()){
-				case CamMoveByMouseDrag.Direct.none:
-					//TODO
-					break;
-				case CamMoveByMouseDrag.Direct.up:
-					move_z(move_speed);
-					break;
-				case CamMoveByMouseDrag.Direct.rightup:
-					move_z(move_speed);
-					move_x(-move_speed);
-					break;
-				case CamMoveByMouseDrag.Direct.leftup:
-					move_z(move_speed);
-					move_x(move_speed);
-					break;
-				case CamMoveByMouseDrag.Direct.down:
-					move_z(-move_speed);
-					break;
-				case CamMoveByMouseDrag.Direct.rightdown:
-					move_z(-move_speed);
-					move_x(-move_speed);
-					break;
-				case CamMoveByMouseDrag.Direct.leftdown:
-					move_z(-move_speed);
-					move_x(move_speed);
-					break;
-				case CamMoveByMouseDrag.Direct.left:
-					move_x(move_speed);
-					break;
-				case CamMoveByMouseDrag.Direct.right:
-					move_x(-move_speed);
-					break;
-				}
-			}
-
 			if(AccelHandler != null){
 
 				move_x( (int)(-move_speed * (AccelHandler.GetAcceleration().x * 10f)) );

@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/* Copyright (C) Cyrus Lam , Inc - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Cyrus Lam <cyrus1127@gmail.com>, Noverber 2015
+ */
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +22,8 @@ public class GameManager : MonoBehaviour {
 	int hit_type_b4 = -1; //initially is in null, so set it to -1
 	int continue_bonus = 0;
 
+	public GameObject HintsLabel = null;
+	public GameObject FinishLabel = null;
 	public Text TimerLabel = null;
 	public Text ScoreLabel = null;
 	public int cude_rand_cnt = 0;
@@ -103,6 +111,7 @@ public class GameManager : MonoBehaviour {
 
 				TimerLabel.gameObject.SetActive(true);
 				ScoreLabel.gameObject.SetActive(true);
+				HintsLabel.SetActive(false);
 			}
 
 			break;
@@ -126,7 +135,9 @@ public class GameManager : MonoBehaviour {
 			sphere.SetEnable(false);
 			_SM.SaveData();
 
-			Application.LoadLevel(0);
+			FinishLabel.SetActive(true);
+
+			StartCoroutine(EndGame_BackToMenu());
 			break;
 		}
 	}
@@ -165,6 +176,7 @@ public class GameManager : MonoBehaviour {
 
 		//call 
 		StartCoroutine(Grand_Cude());
+
 	}
 
 	void creat_cude(){
@@ -193,6 +205,14 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForSeconds(1);
 		creat_cude();
 	}
+
+	//Do random generate more cude
+	IEnumerator EndGame_BackToMenu(){
+		yield return new WaitForSeconds(1);
+		Application.LoadLevel(0);
+	}
+
+
 
 }
 

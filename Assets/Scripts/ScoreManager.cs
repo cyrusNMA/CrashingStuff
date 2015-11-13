@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/* Copyright (C) Cyrus Lam , Inc - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Cyrus Lam <cyrus1127@gmail.com>, Noverber 2015
+ */
+
+using UnityEngine;
 using System.Collections;
 
 namespace Score{
