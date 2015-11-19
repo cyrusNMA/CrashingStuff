@@ -38,8 +38,6 @@ namespace Cube{
 
 			this.GetComponent<Renderer>().material.shader = Shader.Find("Standard");
 			this.GetComponent<Renderer>().material.SetColor("_Color", n_color);
-
-
 		}
 		
 		void OnTriggerEnter(Collider other) {
@@ -49,7 +47,6 @@ namespace Cube{
 				if( this.GetComponent<AudioSource>().clip != null )
 				{
 					this.GetComponent<AudioSource>().mute = false;
-//					this.GetComponent<AudioSource>().Play();
 					this.GetComponent<AudioSource>().PlayOneShot(this.GetComponent<AudioSource>().clip);
 					Debug.Log ( "play audioClip" );
 				}else{

@@ -1,3 +1,3 @@
 cude_rand_cnt,10,
-cube,#FF0000,15
-cube,#0000FF,20
+cube,#FF0000,16711680,15
+cube,#0000FF,255,20

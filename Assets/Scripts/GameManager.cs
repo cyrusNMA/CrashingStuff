@@ -62,11 +62,12 @@ public class GameManager : MonoBehaviour {
 					initial_cube_count = int.Parse(split_data[1]);
 					break;
 				case "cube": 
-					Color hex_;
-					Color.TryParseHexString(split_data[1] , out hex_);
+					int hex_decimal = int.Parse(split_data[2]);
+					Color hex_ = ToColor(hex_decimal);
+
 					cubeProp_list.Add ( new Cube.CubeProp() );
 					cubeProp_list[cubeProp_list.Count-1].type_id = cubeProp_list.Count-1;
-					cubeProp_list[cubeProp_list.Count-1].score = int.Parse(split_data[2]);
+					cubeProp_list[cubeProp_list.Count-1].score = int.Parse(split_data[3]);
 					cubeProp_list[cubeProp_list.Count-1]._color = hex_;
 					break;
 				}
@@ -212,7 +213,14 @@ public class GameManager : MonoBehaviour {
 		Application.LoadLevel(0);
 	}
 
-
+	//convert the Decimal Hex value to color for use
+	Color ToColor(int HexVal)
+	{
+		byte R = (byte)((HexVal >> 16) & 0xFF);
+		byte G = (byte)((HexVal >> 8) & 0xFF);
+		byte B = (byte)((HexVal) & 0xFF);
+		return new Color(R, G, B, 255);
+	}
 
 }
 
