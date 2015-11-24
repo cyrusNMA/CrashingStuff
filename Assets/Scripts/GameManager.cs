@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject FinishLabel = null;
 	public Text TimerLabel = null;
 	public Text ScoreLabel = null;
+	public Text FinalScoreLabel = null;
 	public int cude_rand_cnt = 0;
 	public GameObject prefab_cube = null;
 	public ShpereController sphere = null;
@@ -136,7 +137,10 @@ public class GameManager : MonoBehaviour {
 			sphere.SetEnable(false);
 			_SM.SaveData();
 
+			UpdateFinalScore();
+
 			FinishLabel.SetActive(true);
+			FinalScoreLabel.gameObject.SetActive(true);
 
 			StartCoroutine(EndGame_BackToMenu());
 			break;
@@ -157,7 +161,11 @@ public class GameManager : MonoBehaviour {
 	void UpdateScore( int n_score ){
 
 		//update text Lable
-		ScoreLabel.text = "Score : " + _SM.ScoreUpdate(n_score) + ( _SM.TheHighestScore()? "\nNew Record!!" : "" );
+		ScoreLabel.text = "Score : " + _SM.ScoreUpdate(n_score) + ( _SM.IsTheHighestScore()? "\nNew Record!!" : "" );
+	}
+
+	void UpdateFinalScore( ){
+		FinalScoreLabel.text = "Score You Get:\n" + _SM.ScoreUpdate(0);
 	}
 
 	public void CudeDistoried( int n_type , int n_score ){
@@ -209,7 +217,7 @@ public class GameManager : MonoBehaviour {
 
 	//Do random generate more cude
 	IEnumerator EndGame_BackToMenu(){
-		yield return new WaitForSeconds(1);
+		yield return new WaitForSeconds(3);
 		Application.LoadLevel(0);
 	}
 

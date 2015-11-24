@@ -73,7 +73,7 @@ namespace Score{
 			return current_score;
 		}
 
-		public bool TheHighestScore(){
+		public bool IsTheHighestScore(){
 
 			if( current_score > datas[0].holder_score)
 				return true;
