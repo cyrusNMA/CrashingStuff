@@ -32,9 +32,14 @@ namespace Score{
 
 		void Awake(){
 
+//			debugPrint( " ScoreManager:Awake() " );
+
 			//Init the score 
 			string data = PlayerPrefs.GetString(GameSetting.ID.SCORE_ID);
 			SetData(data);
+
+//			debugPrint( " ScoreManager:Awake()  data get > data ? " );
+			Debug.Log("ScoreManager:Start()");
 		}
 		
 		public void SetData( string txt_data ){
@@ -73,6 +78,10 @@ namespace Score{
 			return current_score;
 		}
 
+		public int GetCurrentScore(){
+			return current_score;
+		}
+
 		public bool IsTheHighestScore(){
 
 			if( current_score > datas[0].holder_score)
@@ -98,6 +107,13 @@ namespace Score{
 
 			//reset
 			current_score = 0;
+		}
+
+		void debugPrint( string n_msg ){
+//			Debug.Log("  ScoreManager::debugPrint() ");
+			if( GameObject.FindWithTag("UIDebug") ){
+				GameObject.FindWithTag("UIDebug").GetComponent<DebugUI>().PrintDebug(n_msg);
+			}
 		}
 
 	}

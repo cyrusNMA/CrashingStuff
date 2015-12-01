@@ -132,15 +132,14 @@ public class GameManager : MonoBehaviour {
 
 			break;
 		case GameState.end:
+
+			FinishLabel.SetActive(true);
+			FinalScoreLabel.gameObject.SetActive(true);
+
 			//Set Score
 			PlayerPrefs.SetString( GameSetting.ID.SCORE_ID ,_SM.GetData_txt());
 			sphere.SetEnable(false);
 			_SM.SaveData();
-
-			UpdateFinalScore();
-
-			FinishLabel.SetActive(true);
-			FinalScoreLabel.gameObject.SetActive(true);
 
 			StartCoroutine(EndGame_BackToMenu());
 			break;
@@ -162,10 +161,12 @@ public class GameManager : MonoBehaviour {
 
 		//update text Lable
 		ScoreLabel.text = "Score : " + _SM.ScoreUpdate(n_score) + ( _SM.IsTheHighestScore()? "\nNew Record!!" : "" );
+
+		UpdateFinalScore();
 	}
 
-	void UpdateFinalScore( ){
-		FinalScoreLabel.text = "Score You Get:\n" + _SM.ScoreUpdate(0);
+	void UpdateFinalScore(){
+		FinalScoreLabel.text = "Score You Get:\n" + _SM.GetCurrentScore();
 	}
 
 	public void CudeDistoried( int n_type , int n_score ){
@@ -218,7 +219,8 @@ public class GameManager : MonoBehaviour {
 	//Do random generate more cude
 	IEnumerator EndGame_BackToMenu(){
 		yield return new WaitForSeconds(3);
-		Application.LoadLevel(0);
+//		Application.LoadLevel(0);
+		Application.LoadLevel("MainMenu");
 	}
 
 	//convert the Decimal Hex value to color for use
