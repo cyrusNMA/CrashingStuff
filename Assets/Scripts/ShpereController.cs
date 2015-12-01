@@ -38,13 +38,23 @@ public class ShpereController : MonoBehaviour {
 			}else if( Input.GetKey(KeyCode.RightArrow) ){
 				move_x(-move_speed);
 			}
-			
+
 			//Mobile Support
+#if UNITY_IOS 
+			Debug.Log( "current device is UNITY_IOS" );
 			if(AccelHandler != null){
 
 				move_x( (int)(-move_speed * (AccelHandler.GetAcceleration().x * 10f)) );
 				move_z( (int)(move_speed * (AccelHandler.GetAcceleration().y * 10f)) );
 			}
+#elif UNITY_ANDROID
+			Debug.Log( "current device is UNITY_ANDROID" );
+			if(AccelHandler != null){
+				
+				move_x( (int)(-move_speed * (AccelHandler.GetAcceleration().x * 10f)) );
+				move_z( (int)(move_speed * (AccelHandler.GetAcceleration().y * 10f)) );
+			}
+#endif
 		}
 	}
 

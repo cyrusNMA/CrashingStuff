@@ -32,13 +32,10 @@ namespace Score{
 
 		void Awake(){
 
-//			debugPrint( " ScoreManager:Awake() " );
-
 			//Init the score 
 			string data = PlayerPrefs.GetString(GameSetting.ID.SCORE_ID);
 			SetData(data);
 
-//			debugPrint( " ScoreManager:Awake()  data get > data ? " );
 			Debug.Log("ScoreManager:Start()");
 		}
 		
@@ -107,13 +104,6 @@ namespace Score{
 
 			//reset
 			current_score = 0;
-		}
-
-		void debugPrint( string n_msg ){
-//			Debug.Log("  ScoreManager::debugPrint() ");
-			if( GameObject.FindWithTag("UIDebug") ){
-				GameObject.FindWithTag("UIDebug").GetComponent<DebugUI>().PrintDebug(n_msg);
-			}
 		}
 
 	}

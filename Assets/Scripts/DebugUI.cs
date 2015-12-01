@@ -5,8 +5,9 @@ using System.Collections;
 public class DebugUI : MonoBehaviour {
 
 	Text DebugLable = null;
+	const int logLimit = 15;
 	int debugTextLenght = 0;
-	string[] split_case = new string[10];
+	string[] split_case = new string[logLimit];
 	string tmp_MultiSignal_msg = "";
 
 	void Awake(){
@@ -36,21 +37,23 @@ public class DebugUI : MonoBehaviour {
 
 
 	public void HandleLog (  string logString ,  string stackTrace ,  LogType type ) {
-		PrintDebug(logString
+		PrintDebug(logString);
 //		           + " : " 
 //		           + stackTrace
-		           );
+
 	}
 
 
 	public void PrintDebug(string n_debugText){
 
+//		Debug.Log ("debugTextLenght ? " + debugTextLenght ); 
+
 		//Shift the first row out.
-		if(debugTextLenght > 10){
+		if(debugTextLenght >= logLimit){
 			for(int i = 0 ; i < split_case.Length - 1 ; i++){
 				split_case[ i ] = split_case [ i + 1 ];
 			}
-			split_case[0] = n_debugText;
+			split_case[split_case.Length - 1] = n_debugText;
 		}else{
 			split_case[debugTextLenght] = n_debugText;
 		}
@@ -60,7 +63,7 @@ public class DebugUI : MonoBehaviour {
 			DebugLable.text += "\n " + split_case[i];
 		}
 		
-		debugTextLenght++;
+		debugTextLenght += 1;
 
 
 	}

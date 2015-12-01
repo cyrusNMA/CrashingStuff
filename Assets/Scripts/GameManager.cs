@@ -171,6 +171,9 @@ public class GameManager : MonoBehaviour {
 
 	public void CudeDistoried( int n_type , int n_score ){
 
+		if( state == GameState.end )
+			return;
+
 		//Do culcate with combom
 		if(hit_type_b4 == n_type){
 			continue_bonus += 1;
